@@ -1,0 +1,10 @@
+# OS / editor junk
+.DS_Store
+__MACOSX/
+Thumbs.db
+*.asv
+.vscode/
+.idea/
+
+# MATLAB
+*.mat

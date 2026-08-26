@@ -1,6 +1,16 @@
+<div align="center">
+
 # FIR Filter Design using the Z-Transform
 
 A small MATLAB project that designs two first-order FIR filters — a low-pass and a high-pass — starting from their Z-domain transfer functions, and verifies the design three different ways: frequency response, pole-zero map, and impulse response.
+
+![MATLAB](https://img.shields.io/badge/MATLAB-R2020a%2B-orange?logo=mathworks&logoColor=white)
+![Toolbox](https://img.shields.io/badge/Requires-Symbolic%20%2B%20Signal%20Processing%20Toolbox-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+</div>
+
+---
 
 ## Contents
 
@@ -39,17 +49,35 @@ Both filters are handled by the same `analyze_filter` function in the script, so
 
 ## Results
 
-**High-pass** — attenuates near DC, opens up as frequency increases toward Nyquist. Pole-zero map shows the zero sitting on the unit circle at `z = 1` (DC), which is exactly why DC gets killed:
+**High-pass** — attenuates near DC, opens up as frequency increases toward Nyquist. The pole-zero map shows the zero sitting right on the unit circle at `z = 1` (DC), which is exactly why DC gets killed.
 
-![High Pass Filter frequency response](images/high_pass_frequency_response.png)
-![High Pass Filter pole-zero map](images/high_pass_pole_zero_map.png)
-![High Pass Filter impulse response](images/high_pass_impulse_response.png)
+<table>
+<tr>
+<td><img src="images/high_pass_frequency_response.png" alt="High Pass Filter frequency response"></td>
+<td><img src="images/high_pass_pole_zero_map.png" alt="High Pass Filter pole-zero map"></td>
+<td><img src="images/high_pass_impulse_response.png" alt="High Pass Filter impulse response"></td>
+</tr>
+<tr>
+<td align="center">Frequency response</td>
+<td align="center">Pole-zero map</td>
+<td align="center">Impulse response</td>
+</tr>
+</table>
 
-**Low-pass** — the mirror image: strong near DC, rolls off toward Nyquist. Here the zero sits at `z = -1` (Nyquist) instead:
+**Low-pass** — the mirror image: strong near DC, rolls off toward Nyquist. Here the zero sits at `z = -1` (Nyquist) instead.
 
-![Low Pass Filter frequency response](images/low_pass_frequency_response.png)
-![Low Pass Filter pole-zero map](images/low_pass_pole_zero_map.png)
-![Low Pass Filter impulse response](images/low_pass_impulse_response.png)
+<table>
+<tr>
+<td><img src="images/low_pass_frequency_response.png" alt="Low Pass Filter frequency response"></td>
+<td><img src="images/low_pass_pole_zero_map.png" alt="Low Pass Filter pole-zero map"></td>
+<td><img src="images/low_pass_impulse_response.png" alt="Low Pass Filter impulse response"></td>
+</tr>
+<tr>
+<td align="center">Frequency response</td>
+<td align="center">Pole-zero map</td>
+<td align="center">Impulse response</td>
+</tr>
+</table>
 
 The two frequency responses are complementary, which is exactly what you'd expect from `(z+1)/z` and `(z-1)/z`. Both impulse responses are non-zero for only 2 samples, confirming both systems are genuinely FIR — there's no pole anywhere except at the origin, so nothing "rings" or decays indefinitely.
 
@@ -87,6 +115,10 @@ This prints the coefficients, zeros, poles, and a stability check for both filte
 - Run both filters on an actual noisy test signal (not just the theoretical response) to show the filtering effect directly
 - Compare against `fir1`/`designfilt` to see how a "designed from scratch" filter stacks up against MATLAB's built-in filter design tools
 
-## License
+---
 
-MIT — see [LICENSE](LICENSE).
+<div align="center">
+
+Licensed under MIT — see [LICENSE](LICENSE).
+
+</div>

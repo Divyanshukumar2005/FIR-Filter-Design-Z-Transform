@@ -1,52 +1,54 @@
 # FIR Filter Design using the Z-Transform
 
-Design and frequency-domain analysis of first-order **Low-Pass** and **High-Pass FIR filters**, derived directly from their Z-domain transfer functions and verified through MATLAB's `freqz`.
+A small MATLAB project that designs two first-order FIR filters — a low-pass and a high-pass — starting from their Z-domain transfer functions, and checks their behavior by plotting the frequency response.
 
-## 📖 Overview
+## Why
 
-Digital filters are core building blocks in signal processing — used to isolate or suppress specific frequency components in a discrete-time signal. This project derives two simple first-order FIR filters from their Z-transform, converts them into difference equations, and analyses their magnitude and phase response.
+Most intro DSP courses teach you to write a difference equation and just trust that it filters the way it's supposed to. This project goes the other way: start from `H(z)`, derive the difference equation algebraically using MATLAB's Symbolic Math Toolbox, and then verify the result against the frequency response you'd expect on paper.
 
-| Filter | Transfer Function `H(z)` | Difference Equation |
+| Filter | H(z) | Difference equation |
 |---|---|---|
-| **Low-Pass (LPF)** | `H(z) = (z + 1) / z` | `y[n] = x[n] + x[n-1]` |
-| **High-Pass (HPF)** | `H(z) = (z - 1) / z` | `y[n] = x[n] - x[n-1]` |
+| Low-Pass  | `(z + 1) / z` | `y[n] = x[n] + x[n-1]` |
+| High-Pass | `(z - 1) / z` | `y[n] = x[n] - x[n-1]` |
 
-The LPF averages consecutive samples, smoothing out fast (high-frequency) variations while preserving slow trends. The HPF takes the difference between consecutive samples, emphasizing rapid changes and attenuating slow-varying (low-frequency) content — useful for tasks like edge/transient detection or removing DC offset.
+The low-pass filter averages two consecutive samples, so fast changes get smoothed out while slower trends survive. The high-pass filter subtracts consecutive samples instead, so it does the opposite — it kills slow-moving/DC content and keeps the sharp, fast-changing parts. It's essentially a first-order discrete derivative, which is why it's useful for things like edge detection or removing a DC offset from a signal.
 
-## 🧠 Method
+## How it works
 
-1. Define each transfer function symbolically in the Z-domain using MATLAB's Symbolic Math Toolbox.
-2. Extract the numerator/denominator polynomial coefficients with `numden` and `sym2poly`.
-3. Evaluate the frequency response by substituting `z = e^{jω}` (handled internally by `freqz`), sweeping the normalized frequency from `0` to `π` rad/sample.
-4. Plot the **magnitude response** (in dB) and **phase response** (in degrees) for each filter.
+1. Define `H(z)` symbolically for each filter using `syms`.
+2. Pull out the numerator and denominator polynomials with `numden` and convert them to plain coefficient vectors using `sym2poly` — these are the coefficients `freqz` actually needs.
+3. Run `freqz` on the coefficients to get the magnitude (dB) and phase (degrees) response across the normalized frequency range `0` to `π`.
+4. Plot both and save them to `images/` so the results here stay reproducible.
 
-## 📊 Results
+Both filters are handled by the same `analyze_filter` function in the script, so there's no copy-pasted logic between the LPF and HPF sections — just two calls with a different `H(z)` each.
 
-**High-Pass Filter** — magnitude rises with frequency (attenuates near DC, passes near Nyquist):
+## Results
+
+**High-pass** — attenuates near DC, opens up as frequency increases toward Nyquist:
 
 ![High Pass Filter response](images/high_pass_filter_response.png)
 
-**Low-Pass Filter** — magnitude falls with frequency (passes near DC, attenuates near Nyquist):
+**Low-pass** — the mirror image: strong near DC, rolls off toward Nyquist:
 
 ![Low Pass Filter response](images/low_pass_filter_response.png)
 
-Both filters show the expected complementary behavior, confirming the frequency response of each system matches its Z-domain transfer function.
+The two responses are complementary, which is exactly what you'd expect from `(z+1)/z` and `(z-1)/z` — they match the theoretical prediction from the transfer functions.
 
-## 🛠️ Running the Code
+## Running it
 
-Requirements: MATLAB with the **Symbolic Math Toolbox**.
+You'll need MATLAB with the **Symbolic Math Toolbox** installed.
 
 ```matlab
 fir_filter_design
 ```
 
-This will print the numerator/denominator coefficients for both filters to the console and generate two figures — one for the LPF response, one for the HPF response.
+This prints the numerator/denominator coefficients for both filters to the console, opens a figure for each, and (re)saves the corresponding PNGs into `images/`.
 
-## 📁 Repository Structure
+## Repository structure
 
 ```
 .
-├── fir_filter_design.m   # Main MATLAB script
+├── fir_filter_design.m   # Main script — defines both filters and calls analyze_filter
 ├── images/
 │   ├── high_pass_filter_response.png
 │   ├── low_pass_filter_response.png
@@ -54,6 +56,6 @@ This will print the numerator/denominator coefficients for both filters to the c
 └── README.md
 ```
 
-## 📄 License
+## License
 
 MIT — see [LICENSE](LICENSE).
